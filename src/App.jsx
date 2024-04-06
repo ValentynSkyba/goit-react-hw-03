@@ -7,14 +7,17 @@ import contactsData from "./common/contacts.json";
 
 const App = () => {
   const [userContacts, setUserContacts] = useState(contactsData);
-  console.log(userContacts);
+
+  const handleDelete = (id) => {
+    setUserContacts((prev) => prev.filter((item) => item.id !== id));
+  };
 
   return (
     <div>
       <h1>Phonebook</h1>
       <ContactForm />
       <SearchBox />
-      <ContactList userContacts={userContacts} />
+      <ContactList userContacts={userContacts} onDelete={handleDelete} />
     </div>
   );
 };
