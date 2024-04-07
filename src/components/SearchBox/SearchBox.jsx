@@ -1,15 +1,22 @@
+import s from "./SearchBox.module.css";
+
 const SearchBox = ({ searchStr, onSearch }) => {
   return (
-    <div>
-      <h3>Find contacts by name</h3>
+    <div className={s.form}>
+      <h2>Find contacts by name</h2>
       <input
         value={searchStr}
         onChange={(e) => onSearch(e.target.value)}
         type="text"
         className="input"
-        Plqaceholder="Search"
+        placeholder="Search"
+        className={s.input}
       />
-      {searchStr && <button onClick={() => onSearch("")}>Reset</button>}
+      {searchStr && (
+        <button className={s.btn} onClick={() => onSearch("")}>
+          Reset
+        </button>
+      )}
     </div>
   );
 };

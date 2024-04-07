@@ -4,6 +4,7 @@ import ContactList from "./components/ConactList/ContactList";
 import ContactForm from "./components/ContactForm/ContactForm";
 import SearchBox from "./components/SearchBox/SearchBox";
 import contactsData from "./common/contacts.json";
+import { toast } from "react-toastify";
 
 const App = () => {
   const [userContacts, setUserContacts] = useState(() => {
@@ -19,6 +20,8 @@ const App = () => {
 
   const handleDelete = (id) => {
     setUserContacts((prev) => prev.filter((item) => item.id !== id));
+    toast.success("Contact deleted successfully");
+    sortData();
   };
 
   const getFilteredContacts = () => {
@@ -29,9 +32,20 @@ const App = () => {
 
   const filteredContacts = getFilteredContacts();
 
+  const sortData = () => {
+    setUserContacts((prev) =>
+      prev.sort((a, b) => a.name.localeCompare(b.name))
+    );
+  };
+
   const addContact = (contact) => {
-    console.log(contact);
+    const isExist = userContacts.some(
+      (item) => item.name === contact.name && item.number === contact.number
+    );
+    if (isExist) return toast.error(`${contact.name} is already in contacts`);
     setUserContacts((prev) => [...prev, contact]);
+    toast.success("Contact added successfully");
+    sortData();
   };
 
   return (
@@ -39,7 +53,11 @@ const App = () => {
       <h1>Phonebook</h1>
       <ContactForm addContact={addContact} />
       <SearchBox searchStr={searchStr} onSearch={setSearchStr} />
-      <ContactList userContacts={filteredContacts} onDelete={handleDelete} />
+      <ContactList
+        searchStr={searchStr}
+        userContacts={filteredContacts}
+        onDelete={handleDelete}
+      />
     </div>
   );
 };
